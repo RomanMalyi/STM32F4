@@ -23,9 +23,10 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   HAL_Init();
-	DisplayInit();
-  SystemClock_Config();
   MX_GPIO_Init();
+  DisplayInit();
+  SystemClock_Config();
+
 	
   while (1)
   {
@@ -36,9 +37,9 @@ int main(void)
 		uint8_t but_3 = HAL_GPIO_ReadPin(GPIOC, BUTTON_3_Pin);
 		uint8_t but_4 = HAL_GPIO_ReadPin(GPIOC, BUTTON_4_Pin);
 		uint8_t but_5 = HAL_GPIO_ReadPin(GPIOC, BUTTON_5_Pin);
-		uint8_t set = GPIO_PIN_SET;
+		uint8_t reset = GPIO_PIN_RESET;
 		
-		if(but_1 == set || but_2 == set || but_3 == set || but_4 == set || but_5 == set)
+		if(but_1 == reset || but_2 == reset || but_3 == reset || but_4 == reset || but_5 == reset)
 		{
 			LcdClearDisplay();
 			LcdSetCursor(0, 0);
@@ -102,14 +103,9 @@ void LcdWriteStr(char* str)
 
 char * ToArray(int number)
 {
-        int n = log10(number) + 1;
-        int i;
       char *numberArray = calloc(n, sizeof(char));
-        for ( i = 0; i < n; ++i, number /= 10 )
-        {
-            numberArray[i] = number % 10;
-        }
-        return numberArray;
+      itoa(number, numberArray, 10);
+      return numberArray;
 }
 		
 void DisplayInit(void)
